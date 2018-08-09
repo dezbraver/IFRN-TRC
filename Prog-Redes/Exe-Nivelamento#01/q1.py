@@ -2,14 +2,18 @@ import sys
 
 try:
 	n = int(sys.argv[1])
+	if n < 1:
+		raise ValueError
 except (IndexError, ValueError):
+	print("### O valor inserido nao esta de acordo com as exigencias de entrada, por favor tente novamente \###")
 	while True:
 		try:
 			n = int(input("Digite um numero inteiro positivo: "))
+			if n < 1:
+				raise ValueError
 			break
 		except ValueError:
-			print("O numero digitado eh invalido.")
-			print("!!!Lembre-se o numero digitado deve ser inteiro e Positivo!!!")
+			print("### Por favor, certifique-se de que o valor inserido esta de acordo com as exigencias de entrada e tente novamente \###")
 
-print(n)
-#tratar o uso de numeros negativos
+for x in range(1, 11):
+	print("{} x {:>2} = {}".format(n, x, (n * x)))
