@@ -1,4 +1,5 @@
 import os
+from collections import deque
 
 m = []
 while True:
@@ -40,4 +41,36 @@ for linha in range(0, l):
 		lista.append(n)
 	m.append(lista)
 
+mA = []
+mB = []
 
+for i in range(len(m)):
+	M = deque(m[i])
+	if i > 0:
+		M.rotate(-i)
+	mA.append(M)
+
+for i in range(len(m)):
+	M = deque(m[i])
+	if i > 0:
+		M.rotate(i)
+	mB.append(M)
+
+somadA = 0
+somadB = 0
+
+for i in range(len(mA)):
+	mult = 1
+	for j in range(len(mA)):
+		mult *= mA[j][i]
+	somadA += mult
+
+for i in range(len(mB)):
+	mult = 1
+	for j in range(len(mB)):
+		mult *= mB[j][i]
+	somadB += mult
+
+determinante = somadA - somadB
+
+print("Determinante = {}".format(determinante))
