@@ -1,5 +1,4 @@
 import os
-from collections import deque
 
 m = []
 while True:
@@ -79,6 +78,13 @@ def Laplace(matriz):
 	for x in range(len(cofs)):
 		determinante += lchave[x] * cofs[x]
 	return determinante
+
+os.system("clear")
+
+for i in range(l):
+	for j in range(c):
+		print("{:^20}".format(m[i][j]), end="\\\\")
+	print()
 
 if c < 3:
 	print("Determinante: {}".format(Det12(m)))
