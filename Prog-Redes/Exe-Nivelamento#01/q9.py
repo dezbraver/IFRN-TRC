@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 
 m = []
@@ -34,13 +35,23 @@ for linha in range(0, l):
 		lista.append(n)
 	m.append(lista)
 
-for i in range(0, l):
+for i in range(len(m[0])):
 	vetor = []
-	for j in range(0, c):
+	for j in range(len(m)):
 		vetor.append(m[j][i])
 	mt.append(vetor)
 
-print(m)
-print(mt)
+os.system("clear")
+print("Matriz:")
+for i in range(len(m)):
+        for j in range(len(m[0])):
+                print("{:^10}".format(m[i][j]), end = "//")
+        print()
 
-# Alterar o algoritmo para conseguir fazer a matriz transposta a partir de matrizes não quadradas
+print("\nTransposta:")
+for i in range(len(mt)):
+	for j in range(len(mt[0])):
+		print("{:^10}".format(mt[i][j]), end = "//")
+	print()
+
+input("Tecle Enter para finalizar o programa...")

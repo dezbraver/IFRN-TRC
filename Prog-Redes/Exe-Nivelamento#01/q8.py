@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 
 m = []
@@ -83,7 +84,7 @@ os.system("clear")
 
 for i in range(l):
 	for j in range(c):
-		print("{:^20}".format(m[i][j]), end="\\\\")
+		print("{:^10}".format(m[i][j]), end="\\\\")
 	print()
 
 if c < 3:

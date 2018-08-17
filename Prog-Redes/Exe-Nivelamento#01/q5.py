@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 
 vogais = ["a", "e", "i", "o", "u"]
