@@ -25,5 +25,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 					l.popleft()
 			for i in range(len(l)):
 				con.send(l[i].encode("utf-8"))
-			con.send("sair".encode("utf-8"))
-			con.close()
+		print("cheguei")
+		c[0].close()
