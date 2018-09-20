@@ -1,0 +1,5 @@
+Sockets cliente e servidor usando as seguintes tecnologias:
+
+- Threads
+- Bradcasting
+- Webservice (via autenticação no suap)
