@@ -1,11 +1,12 @@
 # /usr/bin/env python3
 import socket, threading, json, requests
 
+# Lista de usuarios online
 online = []
 
 # Funçao que recebe as mensagens, imprime-as e envia como resposta um dicionario contendo 
 # o cliente que enviou a mensagem como chave e a sua mensagem como valor associado.
-def ReceberRetornar(con, cli):
+def Receber_Retornar(con, cli):
     while True:
         recebido = con.recv(1024)
         if not recebido: break
