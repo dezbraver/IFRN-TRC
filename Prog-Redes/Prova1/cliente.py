@@ -1,37 +1,43 @@
-#/usr/bin/env python3
-import os, threading, json, requests
-from socket import socket
+#!/usr/bin/env python3
+import os, threading, json, requests, socket, sys
 
 def Recebendo(s):
     while True:
         recebido = s.recv(1024)
-        recebido = json.loads(recebido)
         recebido = recebido.decode("utf-8")
-        print("{}: {}".format(recebido["nome"], recebido["msg"]))
+        recebido = json.loads(recebido)
+        if recebido["msg"] == "SAIR": break
+        print("{}: {}\n Mensagem: ".format(recebido["nome"], recebido["msg"]), end= "")
+    print("Desconectando...")
+    s.close()
+    print("Finalizando Aplicaçao...")
 
 def Enviando(s, nome):
+    print(" Mensagem: ", end="")
     while True:
-        msg = input("Mensagem: ")
-        if msg == "Sair": break
+        msg = input()
         msg = {
+                "flag":"MSG",
                 "nome":nome,
                 "msg":msg
         }
-        msg = msg.encode("utf-8")
-        msg = json.dumps(msg)
-        s.send(msg)
-    print("Desconectando...")
-    s.close()
-    input("Tecle Enter para finalizar o programa...")
-    print("Finalizando Aplicaçao...")
+        if msg["msg"] == "SAIR":
+                msg = json.dumps(msg)
+                msg = msg.encode("utf-8")
+                s.send(msg)
+                break
+        else:
+                msg = json.dumps(msg)
+                msg = msg.encode("utf-8")
+                s.send(msg)
 
-def Token(usuario, senha):
+def Token():
     while True:
         matricula = input("Matricula: ")
         senha = input("Senha: ")
         url_token = "https://suap.ifrn.edu.br/api/v2/autenticacao/token/"
         dados = {
-            "username":usuario,
+            "username":matricula,
             "password":senha
         }
         token = requests.post(url_token, data=dados)
@@ -42,9 +48,10 @@ def Token(usuario, senha):
             break
         else:
             print("Usuario ou senha invalidos")
+    os.system("clear")
     return token
 
-def RecuperaNome(token)
+def RecuperaNome(token):
     url_dados = "https://suap.ifrn.edu.br/api/v2/minhas-informacoes/meus-dados/"
     cabecalho = {
             "Authorization":"JWT {}".format(token)
@@ -53,6 +60,8 @@ def RecuperaNome(token)
     resposta = resposta.content.decode("utf-8")
     resposta = json.loads(resposta)
     nome = resposta["nome_usual"]
+    print("Logado como ({})".format(nome))
+    print("Digite SAIR para finalizar o programa")
     return nome
 
 def Sock():
@@ -60,9 +69,18 @@ def Sock():
     port = 50000
 
     os.system("clear")
-    with socket(AF_INET, SOCK_STREAM) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((host, port))
-        Enviando(s, RecuperaNome(Token()))
-        threading.Thread(target=Recebendo, args=(s,))
+        nome = RecuperaNome(Token())
+        reg = {
+            "flag":"REG",
+            "nome":nome,
+            "msg":"pacote de registro"
+        }
+        reg = json.dumps(reg)
+        reg = reg.encode("utf-8")
+        s.send(reg)
+        threading.Thread(target=Recebendo, args=(s,)).start()
+        Enviando(s, nome)
 
 Sock()
