@@ -3,28 +3,29 @@ import socket, threading, json, requests
 
 # Lista de usuarios online
 online = []
-mensagens = []
 
-# Funçao que recebe as mensagens, imprime-as e envia como resposta um dicionario contendo 
-# o cliente que enviou a mensagem como chave e a sua mensagem como valor associado.
+# Funçao que recebe as mensagens, imprime-as e envia de volta ao cliente um dicionario contendo o tipo da mensagem (flag) cliente que enviou a mensagem como chave e a sua mensagem como valor associado.
 def Receber_Retornar(con, cli):
+    # Variavel para armazenar o nome do cliente para ser usado depois que ele eh desconectado
     nome = ""
     while True:
         recebido = con.recv(1024)
         if not recebido: break
         recebido = recebido.decode("utf-8")
-        # Ex.: recebido = {"nome":"fulano", "msg":"ola, tudo bem?"}
+        # Ex.: recebido = {"flag":"MSG", "nome":"fulano", "msg":"ola, tudo bem?"}
         recebido = json.loads(recebido)
+        # Se o cliente enviar SAIR ele envia de volta para fechar a thread de receber dados
         if recebido["msg"] == "SAIR":
             nome = recebido["nome"]
             enviando = json.dumps(recebido)
             enviando = enviando.encode("utf-8")
             con.send(enviando)
         else:
+            # No inicio da aplicaçao cliente ele envia a mensagem com flag = REG para ser printada a nova conexao
             if recebido["flag"] == "REG":
                 print("REG - Nova Conexao: {}-{}".format(cli, recebido["nome"]))
             else:
-                mensagens.append(recebido)
+                # Caso a flag seja igual a MSG printa a mensagem e a envia para todas as conexoes online
                 print("Recebido {}-{}: {}".format(cli,recebido["nome"], recebido["msg"]))
                 for conexao in online:
                     enviando = json.dumps(recebido)
@@ -36,9 +37,7 @@ def Receber_Retornar(con, cli):
     print("REG - Desconectado: {}-{}".format(cli, nome))
     con.close()
 
-# Funçao que define o socket do servidor adicionando novas conexoes a lista de usuarios online
-# printando que o usuario (cli) se conectou e executando a thread para receber e devolver as
-# mensagens
+# Funçao que define o socket do servidor adicionando novas conexoes a lista de usuarios online e executando a thread de receber e retornar
 def Sock():
     host = "127.0.0.1"
     port = 50000
@@ -52,5 +51,5 @@ def Sock():
             online.append(con)
             threading.Thread(target=Receber_Retornar, args=(con, cli)).start()
 
-# Execuçao da funçao principal (Sock)
+# Chamada a funçao principal (Sock)
 Sock()
