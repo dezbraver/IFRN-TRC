@@ -4,6 +4,9 @@ import socket, threading, json, requests
 # Lista de usuarios online
 online = []
 
+# Lista de mensagens recebidas
+mensagens = []
+
 # Funçao que recebe as mensagens, imprime-as e envia de volta ao cliente um dicionario contendo o tipo da mensagem (flag) cliente que enviou a mensagem como chave e a sua mensagem como valor associado.
 def Receber_Retornar(con, cli):
     # Variavel para armazenar o nome do cliente para ser usado depois que ele eh desconectado
@@ -17,18 +20,23 @@ def Receber_Retornar(con, cli):
         # Se o cliente enviar SAIR ele envia de volta para fechar a thread de receber dados
         if recebido["msg"] == "SAIR":
             nome = recebido["nome"]
-            enviando = json.dumps(recebido)
+            enviando = json.dumps([recebido])
             enviando = enviando.encode("utf-8")
             con.send(enviando)
         else:
             # No inicio da aplicaçao cliente ele envia a mensagem com flag = REG para ser printada a nova conexao
             if recebido["flag"] == "REG":
                 print("REG - Nova Conexao: {}-{}".format(cli, recebido["nome"]))
-            else:
-                # Caso a flag seja igual a MSG printa a mensagem e a envia para todas as conexoes online
-                print("Recebido {}-{}: {}".format(cli,recebido["nome"], recebido["msg"]))
                 for conexao in online:
-                    enviando = json.dumps(recebido)
+                    enviando = json.dumps(mensagens)
+                    enviando = enviando.encode("utf-8")
+                    conexao.send(enviando)
+            else:
+                # Caso a flag seja igual a MSG armazena a mensagem na lista, printa a mensagem e envia a lista com todas as mensagens atuais para todas as conexoes online
+                mensagens.append(recebido)
+                print("MSG - Recebido {}-{}: {}".format(cli,recebido["nome"], recebido["msg"]))
+                for conexao in online:
+                    enviando = json.dumps(mensagens)
                     enviando = enviando.encode("utf-8")
                     conexao.send(enviando)
     # Em caso do cliente desconectar-se sua conexao eh removida da lista de usuarios online

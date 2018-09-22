@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
 import os, threading, json, requests, socket
 
-# Lista que armazena as mensagens ja recebidas
-mensagens = []
-
-# Funçao que recebe as mensagens (se a mensagem eh SAIR ele desconecta e encerra o programa) se nao ele adiciona a mensagem a lista de mensagens recebidas limpa o terminal e printa todas as mensagens recebidas anteriormente
-def Recebendo(s):
+# Funçao que recebe as mensagens (se a mensagem eh SAIR ele desconecta e encerra o programa) se nao ele printa quem esta logado e printa todas as mensagens armazenadas no servidor
+def Recebendo(s, nome):
     while True:
         recebido = s.recv(1024)
         recebido = recebido.decode("utf-8")
         recebido = json.loads(recebido)
-        if recebido["msg"] == "SAIR": break
+        if len(recebido) > 0:
+            if recebido[0]["msg"] == "SAIR": break
+            else:
+                os.system("clear")
+                print("Logado como ({})".format(nome))
+                for mensagem in range(len(recebido)):
+                    print("{}: {}".format(recebido[mensagem]["nome"], recebido[mensagem]["msg"]))
+                print("\nDigite SAIR e tecle enter para finalizar o programa.\n\tMensagem: ", end = "")
         else:
-            mensagens.append(recebido)
-            os.system("clear")
-            for mensagem in mensagens:
-                print("{}: {}".format(mensagem["nome"], mensagem["msg"]))
-            print("\nDigite SAIR e tecle enter para finalizar o programa.\nMensagem: ", end = "")
+            pass
     print("Desconectando...")
     s.close()
     print("Finalizando Aplicaçao...")
 
-# Funçao que envia as mensagens sua execuçao eh encerrada quando o usuario digita SAIR
+# Funçao que printa quem esta logado e envia as mensagens. Sua execuçao eh encerrada quando o usuario digita SAIR
 def Enviando(s, nome):
-    print(" Mensagem: ", end="")
+    print("Logado como ({})".format(nome))
+    print("\tMensagem: ", end="")
     while True:
         msg = input()
         msg = {
@@ -72,8 +73,6 @@ def RecuperaNome(token):
     resposta = resposta.content.decode("utf-8")
     resposta = json.loads(resposta)
     nome = resposta["nome_usual"]
-    print("Logado como ({})".format(nome))
-    print("Digite SAIR para finalizar o programa")
     return nome
 
 # Funçao principal que cria o socket e o conecta ao servidor, envia mensagem de registro ao servidor indicando o nome de quem esta se conectando, inicia a thread de recebimento e  executa a funçao de envio
@@ -93,7 +92,7 @@ def Sock():
         reg = json.dumps(reg)
         reg = reg.encode("utf-8")
         s.send(reg)
-        threading.Thread(target=Recebendo, args=(s,)).start()
+        threading.Thread(target=Recebendo, args=(s,nome)).start()
         Enviando(s, nome)
 
 # Chamada a funçao principal
