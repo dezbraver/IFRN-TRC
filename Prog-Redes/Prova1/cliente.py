@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-import os, threading, json, requests, socket, sys
+# -*- coding: utf-8 -*-
+import os, threading, json, requests, socket
+
+mensagens = []
 
 def Recebendo(s):
     while True:
@@ -7,7 +10,12 @@ def Recebendo(s):
         recebido = recebido.decode("utf-8")
         recebido = json.loads(recebido)
         if recebido["msg"] == "SAIR": break
-        print("{}: {}\n Mensagem: ".format(recebido["nome"], recebido["msg"]), end= "")
+        else:
+            mensagens.append(recebido)
+            os.system("clear")
+            for mensagem in mensagens:
+                print("{}: {}".format(mensagem["nome"], mensagem["msg"]))
+            print("\nDigite SAIR e tecle enter para finalizar o programa.\nMensagem: ", end = "")
     print("Desconectando...")
     s.close()
     print("Finalizando Aplicaçao...")

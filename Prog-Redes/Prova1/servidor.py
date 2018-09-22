@@ -3,6 +3,7 @@ import socket, threading, json, requests
 
 # Lista de usuarios online
 online = []
+mensagens = []
 
 # Funçao que recebe as mensagens, imprime-as e envia como resposta um dicionario contendo 
 # o cliente que enviou a mensagem como chave e a sua mensagem como valor associado.
@@ -23,6 +24,7 @@ def Receber_Retornar(con, cli):
             if recebido["flag"] == "REG":
                 print("REG - Nova Conexao: {}-{}".format(cli, recebido["nome"]))
             else:
+                mensagens.append(recebido)
                 print("Recebido {}-{}: {}".format(cli,recebido["nome"], recebido["msg"]))
                 for conexao in online:
                     enviando = json.dumps(recebido)
@@ -48,7 +50,6 @@ def Sock():
         while True:
             con, cli = s.accept()
             online.append(con)
-            #print("{} se conectou!!!".format(cli))
             threading.Thread(target=Receber_Retornar, args=(con, cli)).start()
 
 # Execuçao da funçao principal (Sock)
