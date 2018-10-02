@@ -1,7 +1,7 @@
 conf t
 router rip
 version 2
-network 192.168.0.0
+network 192.168.78.0
 end
 wr
 
@@ -22,11 +22,15 @@ network 192.168.78.0
 end
 wr
 
-[roteador 1]
+*[roteador 1]
 conf t
+interface f 0/1
+no sh
+ip addr 192.168.78.2 255.255.255.0
+exit
 interface f 0/0
 no sh
-ip addr 192.168.78.1 255.255.255.0
+ip addr 192.168.78.9 255.255.255.0
 exit
 router rip
 version 2
@@ -38,15 +42,7 @@ wr
 conf t
 interface f 0/0
 no sh
-ip addr 192.168.78.2 255.255.255.0
-exit
-interface f 0/1
-no sh
-ip addr 192.168.78.1 255.255.255.0
-exit
-interface f 1/0
-no sh
-ip addr 192.168.78.2 255.255.255.0
+ip addr 192.168.78.18 255.255.255.0
 exit
 router rip
 version 2
@@ -56,9 +52,17 @@ wr
 
 [roteador 3]
 conf t
+interface f 0/0
+no sh
+ip addr 192.168.78.10 255.255.255.0
+exit
 interface f 0/1
 no sh
-ip addr 192.168.78.1 255.255.255.0
+ip addr 192.168.78.17 255.255.255.0
+exit
+interface f 1/0
+no sh
+ip addr 192.168.78.25 255.255.255.0
 exit
 router rip
 version 2
