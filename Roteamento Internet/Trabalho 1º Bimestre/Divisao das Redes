@@ -1,0 +1,66 @@
+[rede1]
+rede:192.168.78.0
+broadcast:192.168.78.15
+hosts: [1-14]
+[rede2]
+rede:192.168.78.16
+broadcast:192.168.78.31
+hosts: [17-30]
+[rede3]
+rede:192.168.78.32
+broadcast:192.168.78.47
+hosts: [33-46]
+[rede4]
+rede:192.168.78.48
+broadcast:192.168.78.63
+hosts: [49-62]
+[rede5]
+rede:192.168.78.64
+broadcast:192.168.78.79
+hosts: [65-78]
+[rede6]
+rede:192.168.78.80
+broadcast:192.168.78.95
+hosts: [81-94]
+[rede7]
+rede:192.168.78.96
+broadcast:192.168.78.111
+hosts: [97-110]
+[rede8]
+rede:192.168.78.112
+broadcast:192.168.78.127
+hosts: [113-126]
+[rede9]
+rede:192.168.78.128
+broadcast:192.168.78.143
+hosts: [129-142]
+[rede10]
+rede:192.168.78.144
+broadcast:192.168.78.159
+hosts: [145-158]
+
+===========================================
+[rede11]
+rede:192.168.78.160
+broadcast:192.168.78.175
+hosts: [161-174]
+[rede12]
+rede:192.168.78.176
+broadcast:192.168.78.191
+hosts: [177-190]
+[rede13]
+rede:192.168.78.192
+broadcast:192.168.78.207
+hosts: [193-206]
+[rede14]
+rede:192.168.78.208
+broadcast:192.168.78.223
+hosts: [209-222]
+[rede15]
+rede:192.168.78.224
+broadcast:192.168.78.239
+hosts: [225-238]
+[rede16]
+rede:192.168.78.240
+broadcast:192.168.78.255
+hosts: [241-254]

@@ -1,0 +1,132 @@
+[R1]
+conf t
+interface f 0/1
+no sh 
+ip addr 192.168.78.14 255.255.255.240
+exit
+interface f 0/0
+no sh 
+ip addr 192.168.78.17 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R2]
+conf t
+interface f 0/1
+no sh 
+ip addr 192.168.78.30 255.255.255.240
+exit
+interface f 0/0
+no sh 
+ip addr 192.168.78.33 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R3]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.49 255.255.255.240
+exit
+interface f 1/0
+no sh 
+ip addr 192.168.78.46 255.255.255.240
+exit
+interface f 0/1
+no sh 
+ip addr 192.168.78.142 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R4]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.62 255.255.255.240
+exit
+interface f 0/1
+no sh 
+ip addr 192.168.78.65 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R5]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.78 255.255.255.240
+exit
+interface f 0/1
+no sh 
+ip addr 192.168.78.113 255.255.255.240
+exit
+interface f 1/0
+no sh 
+ip addr 192.168.78.81 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R6]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.94 255.255.255.240
+exit
+interface f 0/1
+no sh 
+ip addr 192.168.78.97 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R7]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.129 255.255.255.240
+exit
+interface f 0/1
+no sh 
+ip addr 192.168.78.126 255.255.255.240
+exit
+interface f 1/0
+no sh 
+ip addr 192.168.78.145 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[R8]
+conf t
+interface f 0/0
+no sh 
+ip addr 192.168.78.158 255.255.255.240
+exit
+router rip
+version 2
+network 192.168.78.0
+end
+wr
+[PC1]
+ip 192.168.78.1/28 192.168.78.14
+[PC2]
+ip 192.168.78.110/28 192.168.78.97
